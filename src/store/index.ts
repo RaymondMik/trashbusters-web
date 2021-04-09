@@ -1,10 +1,14 @@
 import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import { createLogger } from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import reducers from './reducers';
+import rootReducer from './reducers';
+import rootSaga from "./sagas";
+
 
 const loggerMiddleware = createLogger();
-const middlewares: any[] = [];
+const sagaMiddleware = createSagaMiddleware();
+const middlewares: any[] = [sagaMiddleware];
 let store: any;
 // add logger middleware in development only
 if (process.env.NODE_ENV === 'development') middlewares.push(loggerMiddleware);
@@ -15,7 +19,7 @@ if (process.env.NODE_ENV === 'development') middlewares.push(loggerMiddleware);
  */
 const initStore = () => {
 	store = createStore(
-		reducers,
+		rootReducer,
 		composeWithDevTools(
 			applyMiddleware(...middlewares)
 		)
@@ -30,6 +34,8 @@ const initStore = () => {
 		  store.replaceReducer(nextReducers);
 		});
 	}
+
+	sagaMiddleware.run(rootSaga)
 
 	return store;
 };

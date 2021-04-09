@@ -8,7 +8,8 @@ module.exports = {
     resolve: { 
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
       alias: {
-        'react-native': 'react-native-web'
+        'react-native': 'react-native-web',
+        'react-native-maps': 'react-native-web-maps',
       }
     },
     mode: 'development',

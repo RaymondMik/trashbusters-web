@@ -1,6 +1,7 @@
-import { combineReducers } from 'redux';
-import text from './textReducer';
+import locations from "./locations";
+import modal from "./modal";
+import { combineReducers } from "redux";
 
-const reducers = combineReducers({ text });
+const rootReducer = combineReducers({ locations, modal });
 
-export default reducers;
+export default rootReducer;
