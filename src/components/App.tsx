@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import { hot } from 'react-hot-loader/root';
 import ReactMapGL, { Marker } from 'react-map-gl';
 import styled from 'styled-components';
@@ -128,8 +127,8 @@ const App = () => {
 
     useEffect(() => {
          // @ts-ignore
-         const mario = firebaseInit.database().ref("locations")
-         mario.on("value", (snapshot: any) => { 
+         const fb = firebaseInit.database().ref("locations")
+         fb.on("value", (snapshot: any) => { 
             setLocations(snapshot.val())
          });
    }, []);
