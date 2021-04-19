@@ -8,21 +8,12 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
     resolve: { 
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
-      alias: {
-        'react-native': 'react-native-web',
-        'react-native-maps': 'react-native-web-maps',
-      }
     },
     mode: 'production',
     entry: './src/index.tsx',
     output: {
       filename: 'bundle.js',
       path: path.resolve(__dirname, './dist'),
-    },
-    resolve: {
-      alias: {
-        "^react-native$": "react-native-web"
-      },
     },
     devServer: {
       contentBase: './dist',
