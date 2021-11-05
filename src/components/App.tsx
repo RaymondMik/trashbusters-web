@@ -3,7 +3,7 @@ import { hot } from 'react-hot-loader/root';
 import ReactMapGL, { Marker } from 'react-map-gl';
 import styled from 'styled-components';
 import firebaseInit from '../../firebase';
-import { DeleteFilled  } from '@ant-design/icons';
+import { DeleteFilled } from '@ant-design/icons';
 
 // @ts-ignore
 import mapboxgl from 'mapbox-gl';
@@ -39,13 +39,13 @@ interface PreviewPicturesContainer {
 
 const PreviewContainer = styled.div<PreviewPicturesContainer>`
    position: absolute;
-   top: 0px;
+   top: 0;
    left: 0px;
    opacity: 0;
    min-width: 320px;
    background-color: #fff;
    font-family: 'Roboto', sans-serif;
-   transform: ${(props) => !props.hasPictureAfter ? "translate(-100px, -450px)" : "translate(-100px, -320px)"};
+   transform: ${(props: any) => !props.hasPictureAfter ? "translate(-100px, -450px)" : "translate(-100px, -320px)"};
    border-radius: .3rem;
    box-shadow: 10px 10px 15px rgba(0,0,0,0.5);
    overflow: hidden;
@@ -103,7 +103,19 @@ const Legend = () => (
 );
 
 const Preview = ({title, description, pictureBefore, pictureAfter}: any) => (
-   <PreviewContainer hasPictureAfter={!!pictureAfter}>
+   <PreviewContainer
+      hasPictureAfter={!!pictureAfter} 
+      ref={(el: any) => {
+         if (el) {
+            const { bottom, height } = el.getBoundingClientRect();
+            if (bottom < height) {
+               el.style.top = '500px'
+            } else {
+               el.style.top = 0
+            }
+         }
+      }}
+   >
       <PreviewPicturesContainer hasPictureAfter={!!pictureAfter}>
          <img src={pictureBefore} />
          {pictureAfter && <img src={pictureAfter} />}
@@ -132,7 +144,7 @@ const App = () => {
             setLocations(snapshot.val())
          });
    }, []);
-
+ 
    return (
     <MapContainer>
       <Legend />
@@ -158,9 +170,19 @@ const App = () => {
             }
             return (
                <MarkerContainer key={locations[location]._id}>
-                  <Marker key={locations[location].title} latitude={Number(locations[location].latitude)} longitude={Number(locations[location].longitude)} offsetLeft={-20} offsetTop={-10}>
+                  <Marker 
+                     latitude={Number(locations[location].latitude)} 
+                     longitude={Number(locations[location].longitude)} 
+                     offsetLeft={-20} 
+                     offsetTop={-10}
+                  >
                      <DeleteFilled style={{ fontSize: "25px", color }} />
-                     <Preview title={locations[location].title} description={locations[location].description} pictureBefore={locations[location].pictureBefore} pictureAfter={locations[location].pictureAfter} />
+                     <Preview 
+                        title={locations[location].title}
+                        description={locations[location].description}
+                        pictureBefore={locations[location].pictureBefore}
+                        pictureAfter={locations[location].pictureAfter}
+                     />
                   </Marker>
                </MarkerContainer>
             );
